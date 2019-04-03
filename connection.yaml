@@ -1,0 +1,295 @@
+name: prototipo_basic
+version: "1.0"
+
+channels:
+  # name of the channel
+  prototipochannel:
+    # Required. list of orderers designated by the application to use for transactions on this
+    # channel. This list can be a result of access control ("org1" can only access "ordererA"), or
+    # operational decisions to share loads from applications among the orderers.  The values must
+    # be "names" of orgs defined under "organizations/peers"
+    orderers:
+      - orderer.prototipo.com
+
+    peers:
+      peer0.org1.prototipo.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer1.org1.prototipo.com:
+        endorsingPeer: true
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: true
+      
+      peer0.org2.prototipo.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer1.org2.prototipo.com:
+        endorsingPeer: true
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.org3.prototipo.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer1.org3.prototipo.com:
+        endorsingPeer: true
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: true
+
+      peer0.org4.prototipo.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+      peer1.org4.prototipo.com:
+        endorsingPeer: true
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: true
+
+    chaincodes:
+      # the format follows the "cannonical name" of chaincodes by fabric code
+      - medicinecontrac:1.0
+      - fabcarcontrac:1.0
+
+#
+# list of participating organizations in this network
+#
+organizations:
+  Org1MSP:
+    mspid: Org1MSP
+
+    peers:
+      - peer0.org1.prototipo.com
+      - peer1.org1.prototipo.com
+
+    # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
+    # network. Typically certificates provisioning is done in a separate process outside of the
+    # runtime network. Fabric-CA is a special certificate authority that provides a REST APIs for
+    # dynamic certificate management (enroll, revoke, re-enroll). The following section is only for
+    # Fabric-CA servers.
+    certificateAuthorities:
+      - ca1.prototipo.com
+
+    # [Optional]. If the application is going to make requests that are reserved to organization
+    # administrators, including creating/updating channels, installing/instantiating chaincodes, it
+    # must have access to the admin identity represented by the private key and signing certificate.
+    # Both properties can be the PEM string or local path to the PEM file. Note that this is mainly for
+    # convenience in development mode, production systems should not expose sensitive information
+    # this way. The SDK should allow applications to set the org admin identity via APIs, and only use
+    # this route as an alternative when it exists.
+    adminPrivateKey:
+      path: crypto-config/peerOrganizations/org1.prototipo.com/users/Admin@org1.prototipo.com/msp/keystore/e568e7e1d4e8ed1197cc7584896c47e84b307ef3d512315fbf1a1fadd7fd5da3_sk
+    signedCert:
+      path: crypto-config/peerOrganizations/org1.prototipo.com/users/Admin@org1.prototipo.com/msp/signcerts/Admin\@org1.prototipo.com-cert.pem
+
+  # the profile will contain public information about organizations other than the one it belongs to.
+  # These are necessary information to make transaction lifecycles work, including MSP IDs and
+  # peers with a public URL to send transaction proposals. The file will not contain private
+  # information reserved for members of the organization, such as admin key and certificate,
+  # fabric-ca registrar enroll ID and secret, etc.
+  Org2MSP:
+    mspid: Org2MSP
+    peers:
+      - peer0.org2.prototipo.com
+      - peer1.org2.prototipo.com
+    certificateAuthorities:
+      - ca2.prototipo.com
+    adminPrivateKey:
+      path: crypto-config/peerOrganizations/org2.prototipo.com/users/Admin@org2.prototipo.com/msp/keystore/7c9b9db019c7ef166747a44b2734953d54929f1bcf093bea8ec72e92423be12a_sk
+    signedCert:
+      path: crypto-config/peerOrganizations/org2.prototipo.com/users/Admin@org2.prototipo.com/msp/signcerts/Admin\@org2.prototipo.com-cert.pem
+
+ Org3MSP:
+    mspid: Org3MSP
+    peers:
+      - peer0.org3.prototipo.com
+      - peer1.org3.prototipo.com
+    certificateAuthorities:
+      - ca3.prototipo.com
+    adminPrivateKey:
+      path: crypto-config/peerOrganizations/org3.prototipo.com/users/Admin@org3.prototipo.com/msp/keystore/e1a46c961a62016e555599e9c7854c437a7860682a43bc8c853834a396b39881_sk
+    signedCert:
+      path: crypto-config/peerOrganizations/org3.prototipo.com/users/Admin@org3.prototipo.com/msp/signcerts/Admin\@org3.prototipo.com-cert.pem
+
+ Org4MSP:
+    mspid: Org4MSP
+    peers:
+      - peer0.org4.prototipo.com
+      - peer1.org4.prototipo.com
+    certificateAuthorities:
+      - ca4.prototipo.com
+    adminPrivateKey:
+      path: crypto-config/peerOrganizations/org4.prototipo.com/users/Admin@org4.prototipo.com/msp/keystore/71042b229d62de3342a2657d2f0f5ef543f7db98860ce88b7426a6b18ade9685_sk
+    signedCert:
+      path: crypto-config/peerOrganizations/org4.prototipo.com/users/Admin@org4.prototipo.com/msp/signcerts/Admin\@org4.prototipo.com-cert.pem
+
+#
+# List of orderers to send transaction and channel create/update requests to. For the time
+# being only one orderer is needed. If more than one is defined, which one get used by the
+# SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
+#
+orderers:
+  orderer.prototipo.com:
+    url: grpcs://localhost:7050
+
+    # these are standard properties defined by the gRPC library
+    # they will be passed in as-is to gRPC client constructor
+    grpcOptions:
+      ssl-target-name-override: orderer.prototipo.com
+
+    tlsCACerts:
+      path: crypto-config/ordererOrganizations/prototipo.com/orderers/orderer.prototipo.com/msp/tlscacerts/tlsca.prototipo.com-cert.pem
+
+#
+# List of peers to send various requests to, including endorsement, query
+# and event listener registration.
+#
+peers:
+  peer0.org1.prototipo.com:
+    url: grpcs://localhost:7051
+    grpcOptions:
+      ssl-target-name-override: peer0.org1.prototipo.com
+      request-timeout: 120
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/org1.prototipo.com/peers/peer0.org1.prototipo.com/msp/tlscacerts/tlsca.org1.prototipo.com-cert.pem
+
+  peer1.org1.prototipo.com:
+    url: grpcs://localhost:8051
+    grpcOptions:
+      ssl-target-name-override: peer1.org1.prototipo.com
+      request-timeout: 120
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/org1.prototipo.com/peers/peer1.org1.prototipo.com/msp/tlscacerts/tlsca.org1.prototipo.com-cert.pem
+
+  peer0.org2.prototipo.com:
+    url: grpcs://localhost:9051
+    grpcOptions:
+      ssl-target-name-override: peer0.org2.prototipo.com
+      request-timeout: 120
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/org2.prototipo.com/peers/peer0.org2.prototipo.com/msp/tlscacerts/tlsca.org2.prototipo.com-cert.pem
+
+  peer1.org2.prototipo.com:
+    url: grpcs://localhost:10051
+    grpcOptions:
+      ssl-target-name-override: peer1.org2.prototipo.com
+      request-timeout: 120
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/org2.prototipo.com/peers/peer1.org2.prototipo.com/msp/tlscacerts/tlsca.org2.prototipo.com-cert.pem
+
+  peer0.org3.prototipo.com:
+    url: grpcs://localhost:11051
+    grpcOptions:
+      ssl-target-name-override: peer0.org3.prototipo.com
+      request-timeout: 120
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/org3.prototipo.com/peers/peer0.org3.prototipo.com/msp/tlscacerts/tlsca.org3.prototipo.com-cert.pem
+
+  peer1.org3.prototipo.com:
+    url: grpcs://localhost:12051
+    grpcOptions:
+      ssl-target-name-override: peer1.org3.prototipo.com
+      request-timeout: 120
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/org3.prototipo.com/peers/peer1.org3.prototipo.com/msp/tlscacerts/tlsca.org3.prototipo.com-cert.pem
+
+  peer0.org4.prototipo.com:
+    url: grpcs://localhost:13051
+    grpcOptions:
+      ssl-target-name-override: peer0.org4.prototipo.com
+      request-timeout: 120
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/org4.prototipo.com/peers/peer0.org4.prototipo.com/msp/tlscacerts/tlsca.org4.prototipo.com-cert.pem
+
+  peer1.org3.prototipo.com:
+    url: grpcs://localhost:14051
+    grpcOptions:
+      ssl-target-name-override: peer1.org4.prototipo.com
+      request-timeout: 120
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/org4.prototipo.com/peers/peer1.org4.prototipo.com/msp/tlscacerts/tlsca.org4.prototipo.com-cert.pem
+
+#
+# Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
+# certificate management to be done via REST APIs. Application may choose to use a standard
+# Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
+#
+certificateAuthorities:
+  ca1.prototipo.com:
+    url: https://localhost:7054
+    # the properties specified under this object are passed to the 'http' client verbatim when
+    # making the request to the Fabric-CA server
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/org1.prototipo.com/ca/ca.org1.prototipo.com-cert.pem
+
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca1.prototipo.com
+
+  ca2.prototipo.com:
+    url: https://localhost:8054
+    # the properties specified under this object are passed to the 'http' client verbatim when
+    # making the request to the Fabric-CA server
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/org2.prototipo.com/ca/ca.org2.prototipo.com-cert.pem
+
+    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+    # needed to enroll and invoke new users.
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    # [Optional] The optional name of the CA.
+    caName: ca2.prototipo.com
+
+  ca3.prototipo.com:
+    url: https://localhost:9054
+    # the properties specified under this object are passed to the 'http' client verbatim when
+    # making the request to the Fabric-CA server
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/org3.prototipo.com/ca/ca.org3.prototipo.com-cert.pem
+
+    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+    # needed to enroll and invoke new users.
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    # [Optional] The optional name of the CA.
+    caName: ca3.prototipo.com
+
+  ca4.prototipo.com:
+    url: https://localhost:10054
+    # the properties specified under this object are passed to the 'http' client verbatim when
+    # making the request to the Fabric-CA server
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/org4.prototipo.com/ca/ca.org4.prototipo.com-cert.pem
+
+    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+    # needed to enroll and invoke new users.
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    # [Optional] The optional name of the CA.
+    caName: ca4.prototipo.com

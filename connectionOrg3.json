@@ -1,0 +1,88 @@
+{
+    "name": "prototipo_basic",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Org3",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                },
+                "orderer": "300"
+            }
+        }
+    },
+    "channels": {
+        "prototipochannel": {
+            "orderers": [
+                "orderer.prototipo.com"
+            ],
+            "peers": {
+                "peer0.org3.prototipo.com": {}
+            }
+        }
+    },
+    "organizations": {
+        "Org3": {
+            "mspid": "Org3MSP",
+	    "fullpath": false,
+            "adminPrivateKey": {
+              "path": "/prototipo/crypto-config/peerOrganizations/org3.prototipo.com/users/Admin@org3.prototipo.com/msp/keystore/e1a46c961a62016e555599e9c7854c437a7860682a43bc8c853834a396b39881_sk"
+         },
+            "signedCert":{
+              "path": "/prototipo/crypto-config/peerOrganizations/org3.prototipo.com/users/Admin@org3.prototipo.com/msp/signcerts/Admin@org3.prototipo.com-cert.pem"
+		},
+            "peers": [
+                "peer0.org3.prototipo.com","peer1.org3.prototipo.com"
+            ],
+            "certificateAuthorities": [
+                "ca3.prototipo.com"
+            ]
+        }
+    },
+    "peers": {
+          "peer0.org3.prototipo.com": {
+            "tlsCACerts": {
+              "path": "/prototipo/crypto-config/peerOrganizations/org3.prototipo.com/peers/peer0.org3.prototipo.com/tls/ca.crt"
+            },
+            "url": "grpcs://localhost:11051",
+            "eventUrl": "grpcs://localhost:11053",
+            "grpcOptions": {
+              "ssl-target-name-override": "peer0.org3.prototipo.com"
+            }
+          },
+          "peer1.org3.prototipo.com": {
+            "tlsCACerts": {
+              "path": "/prototipo/crypto-config/peerOrganizations/org3.prototipo.com/peers/peer1.org3.prototipo.com/tls/ca.crt"
+            },
+            "url": "grpcs://localhost:12051",
+            "eventUrl": "grpcs://localhost:12053",
+            "grpcOptions": {
+              "ssl-target-name-override": "peer1.org3.prototipo.com"
+            }
+          }
+    },
+        "orderers": {
+          "orderer.prototipo.com": {
+            "url": "grpcs://localhost:7050",
+            "grpcOptions": {
+              "ssl-target-name-override": "orderer.prototipo.com"
+            },
+            "tlsCACerts": {
+              "path": "/prototipo/crypto-config/ordererOrganizations/prototipo.com/orderers/orderer.prototipo.com/tls/ca.crt"
+            }
+          }
+        },
+    "certificateAuthorities": {
+          "ca3.prototipo.com": {
+            "url": "https://localhost:9054",
+            "httpOptions": {
+              "verify": false
+            },
+            "tlsCACerts": {
+              "path": "/prototipo/crypto-config/peerOrganizations/org3.prototipo.com/ca/ca.org3.prototipo.com-cert.pem"
+            },
+            "caName": "ca3.prototipo.com"
+          }
+        }
+    }
